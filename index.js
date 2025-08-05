@@ -20,7 +20,7 @@ scene.add(ambientLight);
 
 // Load the font
 const loader = new FontLoader();
-loader.load('fonts/helvetiker_regular.typeface.json', function(font) {
+loader.load('https://shaikabdulhafeez474.github.io/3D-Animation/fonts/helvetiker_regular.typeface.json', function(font) {
   const geometry = new THREE.TextGeometry('Hafeez Shaik', {
     font: font,
     size: 1,
@@ -58,3 +58,4 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
