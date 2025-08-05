@@ -2,7 +2,6 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.m
 
 // Scene
 const scene = new THREE.Scene();
-// Soft gradient background (dark blue)
 scene.background = new THREE.Color(0x0a0a1a);
 
 // Camera
@@ -22,14 +21,29 @@ document.body.appendChild(renderer.domElement);
 // Icosahedron Geometry
 const geometry = new THREE.IcosahedronGeometry(1.5, 0);
 
-// Material
+// Generate random colors per face
+const colors = [];
+const color = new THREE.Color();
+const position = geometry.attributes.position;
+const faces = position.count / 3;
+
+for (let i = 0; i < faces; i++) {
+  // Pick a bright random hue
+  color.setHSL(Math.random(), 1.0, 0.5);
+  for (let j = 0; j < 3; j++) {
+    colors.push(color.r, color.g, color.b);
+  }
+}
+geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+// Material supporting vertex colors
 const material = new THREE.MeshStandardMaterial({
-  color: 0x00ffff,
-  metalness: 0.7,
-  roughness: 0.2,
-  emissive: 0x004040,
-  emissiveIntensity: 0.5,
-  flatShading: true // keeps faceted look
+  vertexColors: true,
+  flatShading: true,
+  roughness: 0.4,
+  metalness: 0.1,
+  emissive: 0x222222,
+  emissiveIntensity: 0.3
 });
 
 // Mesh
@@ -37,13 +51,16 @@ const icosahedron = new THREE.Mesh(geometry, material);
 scene.add(icosahedron);
 
 // Lights
-const light1 = new THREE.PointLight(0xffffff, 1);
-light1.position.set(5, 5, 5);
-scene.add(light1);
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(ambientLight);
 
-const light2 = new THREE.PointLight(0xffffff, 0.5);
-light2.position.set(-5, -5, -5);
-scene.add(light2);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+directionalLight.position.set(5, 5, 5);
+scene.add(directionalLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 0.5);
+pointLight.position.set(-5, -5, -5);
+scene.add(pointLight);
 
 // Animate
 function animate() {
