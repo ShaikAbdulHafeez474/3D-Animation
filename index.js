@@ -26,7 +26,7 @@ scene.add(directionalLight);
 // ✅ Use FULL URL for font loading from GitHub Pages
 const fontLoader = new FontLoader();
 fontLoader.load(
-  'https://shaikabdulhafeez474.github.io/3D-Animation/fonts/helvetiker_regular.typeface.json',
+  'https://github.com/ShaikAbdulHafeez474/3D-Animation/blob/main/fonts/helvetiker_regular.typeface.json',
   (font) => {
     const textGeometry = new TextGeometry('Hafeez Shaik', {
       font: font,
@@ -67,3 +67,4 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
