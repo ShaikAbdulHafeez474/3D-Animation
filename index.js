@@ -33,23 +33,22 @@ scene.add(pointLight);
 // Torus Knot Geometry
 const geometry = new THREE.TorusKnotGeometry(1.5, 0.5, 200, 32);
 
-// Rainbow Gradient Material
-const material = new THREE.MeshStandardMaterial({
-  metalness: 0.8,
-  roughness: 0.3,
-  envMapIntensity: 1,
-  // Use vertex colors for gradient effect
-  vertexColors: true
-});
-
 // Add vertex colors (rainbow gradient)
 const colors = [];
 const color = new THREE.Color();
-for (let i = 0; i < geometry.attributes.position.count; i++) {
-  color.setHSL(i / geometry.attributes.position.count, 1.0, 0.5);
+const count = geometry.attributes.position.count;
+for (let i = 0; i < count; i++) {
+  color.setHSL(i / count, 1.0, 0.5);
   colors.push(color.r, color.g, color.b);
 }
 geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+// Material that supports vertex colors
+const material = new THREE.MeshStandardMaterial({
+  metalness: 0.8,
+  roughness: 0.3,
+  vertexColors: true // ✅ REQUIRED to show the rainbow gradient
+});
 
 // Mesh
 const torusKnot = new THREE.Mesh(geometry, material);
@@ -58,10 +57,8 @@ scene.add(torusKnot);
 // Animate
 function animate() {
   requestAnimationFrame(animate);
-
   torusKnot.rotation.x += 0.01;
   torusKnot.rotation.y += 0.02;
-
   controls.update();
   renderer.render(scene, camera);
 }
